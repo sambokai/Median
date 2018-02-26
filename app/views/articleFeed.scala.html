@@ -1,0 +1,14 @@
+@(content: Seq[String])
+@main("Article Feed") {
+
+  <ol type="1">
+  @{
+    content.map(item => {
+        <li>
+        {item}
+        </li>
+
+    })
+  }
+  </ol>
+}
