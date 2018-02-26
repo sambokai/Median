@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject._
 
-import data.User
+import database.User
 import play.api.mvc._
 import services.UserFinder
 
