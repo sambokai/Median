@@ -2,12 +2,11 @@ package controllers
 
 import javax.inject._
 
-import data.{Article, User}
+import data.User
 import play.api.mvc._
 import services.UserFinder
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, ExecutionContext}
+import scala.concurrent.{ExecutionContext, Future}
 
 
 /**
@@ -23,13 +22,14 @@ class HomeController @Inject()(userFinder: UserFinder, cc: ControllerComponents)
     * will be called when the application receives a `GET` request with
     * a path of `/`.
     */
-  def index = Action {
+  def index: Action[AnyContent] = Action.async {
+    val users: Future[Seq[User]] = userFinder.getUsers
 
-    val users: Seq[User] = Await.result(userFinder.getUsers, Duration.Inf)
+    val outputs: Future[Seq[String]] = users.map(_.map(user => s"${user.username} was born on ${user.birthday}. His/Her Email is '${user.email}'"))
 
-    val result: Seq[String] = users.map(user => s"${user.username} was born on ${user.birthday}. His/Her Email is '${user.email}'")
-
-    Ok(views.html.index(result))
+    outputs.map(eventualOutput =>
+      Ok(views.html.index(eventualOutput))
+    )
   }
 
 }
