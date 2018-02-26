@@ -2,15 +2,9 @@ package database
 
 import java.sql.Date
 
-import play.api.libs.json._
+import domain.User
 import slick.jdbc.MySQLProfile.api._
 import slick.lifted.{TableQuery, Tag}
-
-case class User(id: Int, username: String, email: String, birthday: Date)
-
-object User {
-  implicit val userFormat: OFormat[User] = Json.format[User]
-}
 
 object UserTable {
 
