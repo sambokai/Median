@@ -57,7 +57,7 @@ class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
     result.map {
       case (userarticles, totalCount) => {
         val totalPages: Int = roundUp(totalCount / limit) + 1
-        val currentPage: Int = offset / totalPages + 1
+        val currentPage: Int = offset / limit + 1
 
         ArticleFeedPage(
           userarticles,
