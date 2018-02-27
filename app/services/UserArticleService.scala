@@ -1,7 +1,5 @@
 package services
 
-import java.sql.Timestamp
-import java.time.Instant
 import javax.inject.{Inject, Singleton}
 
 import database.ArticleTable.articles
@@ -12,6 +10,8 @@ import play.api.db.slick.DatabaseConfigProvider
 import services.UserArticleService._
 import slick.jdbc.JdbcProfile
 import slick.jdbc.MySQLProfile.api._
+import com.github.tototoshi.slick.MySQLJodaSupport._
+import com.github.nscala_time.time.Imports._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -77,7 +77,7 @@ class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
     * @return Article id of the posted article.
     */
   def postArticle(userId: Int, body: String): Future[Int] = {
-    val query = (articles returning articles.map(_.id)) += Article(0, userId, body, Timestamp.from(Instant.now))
+    val query = (articles returning articles.map(_.id)) += Article(0, userId, body, DateTime.now())
     db.run(query)
   }
 

@@ -1,18 +1,18 @@
 name := "play_slick_rest"
- 
-version := "1.0" 
-      
+
+version := "1.0"
+
 lazy val `play_slick_rest` = (project in file(".")).enablePlugins(PlayScala)
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
-      
+
 resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
-      
+
 scalaVersion := "2.12.2"
 
 libraryDependencies ++= Seq( ehcache , ws , specs2 % Test , guice )
 
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
+unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
 // Slick
 libraryDependencies ++= Seq(
@@ -29,4 +29,15 @@ libraryDependencies ++= Seq(
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "3.0.1",
   "com.typesafe.play" %% "play-slick-evolutions" % "3.0.1"
+)
+
+
+// Joda Time (nscala-time scala wrapper for joda time)
+libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.18.0"
+
+
+// Slic Joda Mapper
+libraryDependencies ++= Seq(
+  "com.github.tototoshi" %% "slick-joda-mapper" % "2.3.0",
+  "org.joda" % "joda-convert" % "1.7"
 )
