@@ -1,9 +1,9 @@
 package database
 
-import java.sql.Timestamp
-
 import domain.Article
+import com.github.nscala_time.time.Imports._
 import slick.jdbc.MySQLProfile.api._
+import com.github.tototoshi.slick.MySQLJodaSupport._
 import slick.lifted.{Query, TableQuery, Tag}
 
 object ArticleTable {
@@ -16,7 +16,7 @@ object ArticleTable {
 
     def body = column[String]("body")
 
-    def created = column[Timestamp]("created_on")
+    def created = column[DateTime]("created_on")
 
     def * = (id, user, body, created) <> ((Article.apply _).tupled, Article.unapply)
   }
