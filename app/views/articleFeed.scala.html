@@ -6,9 +6,11 @@
   @{
     articleFeedPage.articles.map {
       case (article, user) => {
-        <div class="card mt-1">
+        <div class="card mt-2">
+          <div class="card-header">
+            <a href="#">{user.username}</a> on {article.created}:
+          </div>
           <div class="card-body">
-            <h5 class="card-title">{user.username} wrote on {article.created.toString}:</h5>
             <p class="card-text">{article.body}</p>
           </div>
         </div>
