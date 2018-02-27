@@ -1,14 +1,17 @@
-@(content: Seq[String])
+@import domain.{Article, User}
+@(articles: Seq[(Article, User)])
 @main("Article Feed") {
 
-  <ol type="1">
   @{
-    content.map(item => {
-        <li>
-        {item}
-        </li>
-
-    })
+    articles.map {
+      case (article, user) => {
+        <div class="card w-75">
+          <div class="card-body">
+            <h5 class="card-title">{user.username} wrote on {article.created.toString}:</h5>
+            <p class="card-text">{article.body}</p>
+          </div>
+        </div>
+      }
+    }
   }
-  </ol>
 }
