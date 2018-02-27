@@ -1,5 +1,6 @@
 
-GET         /feed                controllers.ArticleFeedController.index()
+GET         /feed                controllers.Default.redirect(to = "/feed/1")
+GET         /feed/:page          controllers.ArticleFeedController.index(page: Int)
 
 GET         /post                controllers.PostArticleController.index
 POST        /post                controllers.PostArticleController.submitArticle
