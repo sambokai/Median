@@ -1,1 +1,20 @@
-@()
+@import domain.User
+@import views.form.PostArticleForm
+@(form: Form[PostArticleForm], users: Seq[User],postUrl: Call)(implicit request: RequestHeader, messages: Messages)
+
+@main("New Article") {
+  @helper.form(postUrl) {
+
+    @helper.CSRF.formField
+    @helper.textarea(form("body"), 'required -> true, 'title -> "Article Text")
+    @helper.select(form("userId"), userOptions)
+
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Post Article</button>
+  }
+}
+
+@userOptions = @{
+  users.map { user =>
+    (user.id.toString, user.username)
+  }
+}
