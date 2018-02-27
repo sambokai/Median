@@ -7,15 +7,17 @@ import javax.inject.{Inject, Singleton}
 import database.ArticleTable.articles
 import database.UserTable.users
 import domain.{Article, User}
+import dto.ArticleFeedPage
 import play.api.db.slick.DatabaseConfigProvider
+import services.UserArticleService._
 import slick.jdbc.JdbcProfile
 import slick.jdbc.MySQLProfile.api._
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
-class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider) {
+class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
 
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
@@ -31,21 +33,42 @@ class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider) {
   /**
     * @param limit  Maximum number of article/user pairs to be retrieved. Commonly used for pagination.
     * @param offset Index of article to start retrieving until `limit`. Commonly used for pagination.
-    * @return Article/User pair sorted by article creation date and within the range defined by `limit` and `offset`.
+    * @return Future of ArticleFeedPage dto
     */
-  def getLatestArticles(limit: Int, offset: Int): Future[Seq[(Article, User)]] = {
-    val userArticles = for {
+  def getLatestArticles(limit: Int, offset: Int): Future[ArticleFeedPage] = {
+    val allUserArticles = for {
       (a, u) <- articles join users on (_.user === _.id)
     } yield (a, u)
 
-    val query = userArticles
-      .sortBy(_._1.created.desc)
+    val latestArticles = allUserArticles
+      .sortBy { case (art, usr) =>
+        art.created.desc
+      }
       .drop(offset)
       .take(limit)
       .result
 
-    db.run(query)
+    val totalcount = allUserArticles.size.result
+
+    val finalQuery = latestArticles zip totalcount
+
+    val result: Future[(Seq[(Article, User)], TotalCount)] = db.run(finalQuery)
+
+    result.map {
+      case (userarticles, totalCount) => {
+        val totalPages: Int = roundUp(totalCount / limit) + 1
+        val currentPage: Int = offset / totalPages + 1
+
+        ArticleFeedPage(
+          userarticles,
+          currentPage,
+          totalPages
+        )
+      }
+    }
   }
+
+  private def roundUp(d: Double): Int = math.ceil(d).toInt
 
 
   /**
@@ -58,4 +81,8 @@ class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider) {
     db.run(query)
   }
 
+}
+
+object UserArticleService {
+  type TotalCount = Int
 }
