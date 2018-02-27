@@ -1,9 +1,10 @@
-@import domain.{Article, User}
-@(articles: Seq[(Article, User)])
+@import dto.ArticleFeedPage
+@(articleFeedPage: ArticleFeedPage)(implicit request: Request[Any])
 @main("Article Feed") {
 
+  @* Article Feed *@
   @{
-    articles.map {
+    articleFeedPage.articles.map {
       case (article, user) => {
         <div class="card w-75">
           <div class="card-body">
@@ -14,4 +15,23 @@
       }
     }
   }
+
+  @* Pagination *@
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item @if(articleFeedPage.currentPage == 1){disabled} ">
+        <a class="page-link" href="@{articleFeedPage.currentPage - 1}">Previous</a>
+      </li>
+      @for(i <- 1 to articleFeedPage.totalPages) {
+        <li class="page-item @if(i == articleFeedPage.currentPage){active} ">
+          <a class="page-link" href="@{i}">
+            @{i}
+          </a>
+        </li>
+      }
+      <li class="page-item @if(articleFeedPage.currentPage == articleFeedPage.totalPages){disabled}">
+        <a class="page-link" href="@{articleFeedPage.currentPage + 1}">Next</a>
+      </li>
+    </ul>
+  </nav>
 }
