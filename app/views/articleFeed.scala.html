@@ -1,4 +1,5 @@
 @import dto.ArticleFeedPage
+@import java.util.Locale
 @(articleFeedPage: ArticleFeedPage)(implicit request: Request[Any])
 @main("Article Feed") {
 
@@ -8,7 +9,7 @@
       case (article, user) => {
         <div class="card mt-2">
           <div class="card-header">
-            <a href="#">{user.username}</a> on {article.created}:
+            <a href="#">{user.username}</a> on {article.created.toString("dd. MMM yyyy ' at ' k:m:s", Locale.ENGLISH)}:
           </div>
           <div class="card-body">
             <p class="card-text">{article.body}</p>
