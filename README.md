@@ -2,7 +2,7 @@
 ##### *Definitely not a [Medium](https://medium.com/) clone...*
 
 
-Basic blogging web service built in order to learn about software (enterprise) architecture and design patterns, with a focus on data persistence patterns and relational database design. 
+Basic blogging web service built in order to learn about (enterprise) software architecture and design patterns, with a focus on data persistence patterns and relational database design. 
 
 ### Technology Stack
 * [Play Framework](https://www.playframework.com/) - Web application framework
