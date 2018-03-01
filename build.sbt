@@ -41,3 +41,5 @@ libraryDependencies ++= Seq(
   "com.github.tototoshi" %% "slick-joda-mapper" % "2.3.0",
   "org.joda" % "joda-convert" % "1.7"
 )
+
+libraryDependencies += "com.typesafe.slick" %% "slick-codegen" % "3.2.1"

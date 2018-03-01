@@ -1,5 +1,5 @@
 package dto
 
-import domain.Article
+import database.tables.generated.Tables.ArticlesRow
 
-case class ArticleDetailPage(article: Article, comments: Seq[Option[ArticleCommentAndUser]])
+case class ArticleDetailPage(article: ArticlesRow, comments: Seq[Option[ArticleCommentAndUser]])

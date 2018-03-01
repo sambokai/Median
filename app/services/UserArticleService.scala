@@ -2,16 +2,15 @@ package services
 
 import javax.inject.{Inject, Singleton}
 
-import database.ArticleTable.articles
-import database.UserTable.users
-import domain.{Article, User}
+import com.github.nscala_time.time.Imports._
+import com.github.tototoshi.slick.MySQLJodaSupport._
+import database.tables.generated.Tables
 import dto.ArticleFeedPage
 import play.api.db.slick.DatabaseConfigProvider
 import services.UserArticleService._
 import slick.jdbc.JdbcProfile
 import slick.jdbc.MySQLProfile.api._
-import com.github.tototoshi.slick.MySQLJodaSupport._
-import com.github.nscala_time.time.Imports._
+import database.tables.generated.Tables._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -27,7 +26,7 @@ class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
   /**
     * @return All registered users
     */
-  def getUsers: Future[Seq[User]] = db.run(users.result)
+  def getUsers: Future[Seq[UsersRow]] = db.run(Users.result)
 
 
   /**
@@ -37,12 +36,12 @@ class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
     */
   def getLatestArticles(limit: Int, offset: Int): Future[ArticleFeedPage] = {
     val allUserArticles = for {
-      (a, u) <- articles join users on (_.user === _.id)
+      (a, u) <- Articles join Users on (_.userId === _.userId)
     } yield (a, u)
 
     val latestArticles = allUserArticles
       .sortBy { case (art, usr) =>
-        art.created.desc
+        art.createdOn.desc
       }
       .drop(offset)
       .take(limit)
@@ -52,7 +51,7 @@ class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
 
     val finalQuery = latestArticles zip totalcount
 
-    val result: Future[(Seq[(Article, User)], TotalCount)] = db.run(finalQuery)
+    val result: Future[(Seq[(ArticlesRow, UsersRow)], TotalCount)] = db.run(finalQuery)
 
     result.map {
       case (userarticles, totalCount) => {
@@ -77,7 +76,7 @@ class UserArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
     * @return Article id of the posted article.
     */
   def postArticle(userId: Int, body: String): Future[Int] = {
-    val query = (articles returning articles.map(_.id)) += Article(0, userId, body, DateTime.now())
+    val query = (Articles returning Articles.map(_.articleId)) += Tables.ArticlesRow(0, Some(userId), Some(body), Some(DateTime.now))
     db.run(query)
   }
 

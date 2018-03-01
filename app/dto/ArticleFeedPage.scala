@@ -1,5 +1,5 @@
 package dto
 
-import domain.{Article, User}
+import database.tables.generated.Tables.{ArticlesRow, UsersRow}
 
-case class ArticleFeedPage(articles: Seq[(Article, User)], currentPage: Int, totalPages: Int)
+case class ArticleFeedPage(articles: Seq[(ArticlesRow, UsersRow)], currentPage: Int, totalPages: Int)

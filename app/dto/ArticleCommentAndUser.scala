@@ -1,5 +1,5 @@
 package dto
 
-import domain.User
+import database.tables.generated.Tables.{ArticleCommentsRow, UsersRow}
 
-case class ArticleCommentAndUser(user: User, articleComment: domain.ArticleComment)
+case class ArticleCommentAndUser(user: UsersRow, articleComment: ArticleCommentsRow)

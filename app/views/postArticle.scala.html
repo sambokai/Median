@@ -1,6 +1,6 @@
-@import domain.User
+@import database.tables.generated.Tables.UsersRow
 @import views.form.PostArticleForm
-@(form: Form[PostArticleForm], users: Seq[User],postUrl: Call)(implicit request: RequestHeader, messages: Messages)
+@(form: Form[PostArticleForm], users: Seq[UsersRow],postUrl: Call)(implicit request: RequestHeader, messages: Messages)
 
 @main("New Article") {
   @helper.form(postUrl) {
@@ -15,6 +15,6 @@
 
 @userOptions = @{
   users.map { user =>
-    (user.id.toString, user.username)
+    (user.userId.toString, user.username)
   }
 }
