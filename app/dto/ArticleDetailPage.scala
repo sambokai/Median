@@ -1,5 +1,5 @@
 package dto
 
-import domain.{Article, ArticleComment}
+import domain.Article
 
-case class ArticleDetailPage(article: Article, comments: Seq[ArticleComment])
+case class ArticleDetailPage(article: Article, comments: Seq[Option[ArticleCommentAndUser]])

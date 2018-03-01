@@ -1,2 +1,23 @@
 @import dto.ArticleDetailPage
 @(articleDetailPage: ArticleDetailPage)
+
+
+@{
+    <h3>
+    User # {articleDetailPage.article.user} wrote article:
+    </h3>
+    <p>
+    {articleDetailPage.article.body}
+    </p>
+}
+
+<h4>Comments:</h4>
+
+@{
+  articleDetailPage.comments.map { optComment =>
+    optComment.map{ comment =>
+      <h5>{comment.user.username} wrote: {comment.articleComment.body}</h5>
+    }
+  }
+}
+
