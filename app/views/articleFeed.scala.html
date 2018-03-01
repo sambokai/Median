@@ -9,7 +9,7 @@
       case (article, user) => {
         <div class="card mt-2">
           <div class="card-header">
-            <a href="#">{user.username}</a> on {article.createdOn.get.toString("dd. MMM yyyy ' at ' k:m:s", Locale.ENGLISH)}:
+            <a href="#">{user.username}</a> on {article.createdOn.get.toString("dd. MMM yyyy ' at ' k:m:ss", Locale.ENGLISH)}
           </div>
           <div class="card-body">
             <p class="card-text">{article.body.getOrElse("")}</p>
