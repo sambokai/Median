@@ -1,29 +1,27 @@
-@import dto.ArticleDetailPage
-@(articleDetailPage: ArticleDetailPage)
-@main(s"Article #${articleDetailPage.article.articleId}") {
+@import domain.Article
+@(article: Article)
+@main(s"Article #${article.id}") {
 
   @{
       <h3>
-        User #
-        {articleDetailPage.article.userId.get}
-        wrote article:
+      User #
+      {article.user.id}
+      wrote article:
       </h3>
       <p>
-        {articleDetailPage.article.body}
+      {article.body}
       </p>
   }
 
   <h4>Comments:</h4>
 
   @{
-    articleDetailPage.comments.map { optComment =>
-      optComment.map { comment =>
-        <h5>
-          {comment.user.username}
-          wrote:
-          {comment.articleComment.body}
-        </h5>
-      }
+    article.comments.map { comment =>
+      <h5>
+      {comment.user.username}
+      wrote:
+      {comment.body}
+      </h5>
     }
   }
 }
