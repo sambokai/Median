@@ -1,7 +1,8 @@
 @import java.util.Locale
-@import domain.ArticlesSection
+
 @import views.form.PostArticleForm
 @import domain.User
+@import dto.ArticlesSection
 @(articlesSection: ArticlesSection, form: Form[PostArticleForm], users: Seq[User], postUrl: Call)(implicit request: RequestHeader, messages: Messages)
 
 @userOptions = @{
@@ -10,13 +11,6 @@
   }
 }
 
-@currentPage = @{
-  articlesSection.index / articlesSection.articles.size + 1
-}
-
-@totalPagesCount = @{
-  (articlesSection.totalArticleAmount / articlesSection.articles.size + 1) + 1
-}
 
 @main("Article Feed") {
 
@@ -54,18 +48,18 @@
   @* Pagination *@
   <nav class="mt-3">
     <ul class="pagination justify-content-center">
-      <li class="page-item @if(currentPage == 1){disabled} ">
-        <a class="page-link" href="@{currentPage - 1}">Previous</a>
+      <li class="page-item @if(articlesSection.currentPage == 1){disabled} ">
+        <a class="page-link" href="@{articlesSection.currentPage - 1}">Previous</a>
       </li>
-      @for(i <- 1 to totalPagesCount) {
-        <li class="page-item @if(i == currentPage){active} ">
+      @for(i <- 1 to articlesSection.totalPages) {
+        <li class="page-item @if(i == articlesSection.currentPage){active} ">
           <a class="page-link" href="@{i}">
             @{i}
           </a>
         </li>
       }
-      <li class="page-item @if(currentPage == totalPagesCount){disabled}">
-        <a class="page-link" href="@{currentPage + 1}">Next</a>
+      <li class="page-item @if(articlesSection.currentPage == articlesSection.totalPages){disabled}">
+        <a class="page-link" href="@{articlesSection.currentPage + 1}">Next</a>
       </li>
     </ul>
   </nav>

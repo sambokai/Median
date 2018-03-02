@@ -4,7 +4,11 @@ import javax.inject.{Inject, Singleton}
 
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
-import domain.{Article, ArticlesSection}
+import slick.jdbc.MySQLProfile.api._
+import domain.Article
+import dto.ArticlesSection
+import database.tables.generated.Tables._
+
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -18,7 +22,15 @@ class ArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
 
   def postArticle(userId: Int, body: String): Future[Int] = ???
 
-  def getLatestArticles(limit: Int, offset: Int): Future[ArticlesSection] = ???
+
+  // TODO: Implement getLatestArticles()
+  def getLatestArticles(limit: Int, offset: Int): Future[ArticlesSection] = {
+    val articles: Seq[Article] = ???
+    val currentPage: Int = ???
+    val totalPageCount: Int = ???
+
+    ???
+  }
 
   def getArticle(articleId: Int): Future[Article] = ???
 
