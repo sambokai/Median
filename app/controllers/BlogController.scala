@@ -29,7 +29,7 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
     } yield Ok(views.html.articleFeed(articleSection, PostArticleForm.postArticleForm, users, articlePostUrl(page)))
   }
 
-  def articleFeedIndex(page: Int) = Action.async { implicit request: Request[AnyContent] => this.serveFeed(page, pageSize) }
+  def articleFeedIndex(page: Int) = Action.async { implicit request => this.serveFeed(page, pageSize) }
 
   def postArticleOnFeed(page: Int) = Action.async { implicit request =>
     val formData = PostArticleForm.postArticleForm.bindFromRequest.data
@@ -39,7 +39,9 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
   }
 
 
-  def articleDetailIndex(articleId: Int) = TODO
+  def articleDetailIndex(articleId: Int) = Action.async { implicit request =>
+    articleService.getArticle(articleId).map(article => Ok(views.html.articleDetail(article)))
+  }
 
   def postCommentOnArticle(articleId: Int) = TODO
 
