@@ -5,7 +5,7 @@ import javax.inject.{Inject, Singleton}
 import domain.User
 import dto.ArticlesSection
 import play.api.i18n.I18nSupport
-import play.api.mvc.{AbstractController, ControllerComponents, MessagesActionBuilder}
+import play.api.mvc._
 import services.{ArticleService, CommentService, UserService}
 import views.form.PostArticleForm
 
@@ -16,26 +16,33 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
 
   private val pageSize: Int = 5
 
-  def articleFeedIndex(page: Int) = Action.async { implicit request =>
-    val articlePostUrl = routes.BlogController.postArticleOnFeed(page)
+  def articlePostUrl(page: Int) = routes.BlogController.postArticleOnFeed(page)
 
+
+  def serveFeed(page: Int, pageSize: Int)(implicit request: Request[AnyContent]) = {
     val allUsers: Future[Seq[User]] = userService.getAllUsers
     val eventualArticlesSection: Future[ArticlesSection] = articleService.getLatestArticles(pageSize, (page - 1) * pageSize)
 
     for {
       users <- allUsers
       articleSection <- eventualArticlesSection
-    } yield Ok(views.html.articleFeed(articleSection, PostArticleForm.postArticleForm, users, articlePostUrl))
-
+    } yield Ok(views.html.articleFeed(articleSection, PostArticleForm.postArticleForm, users, articlePostUrl(page)))
   }
 
-  def postArticleOnFeed(page: Int) = TODO
+  def articleFeedIndex(page: Int) = Action.async { implicit request: Request[AnyContent] => this.serveFeed(page, pageSize) }
+
+  def postArticleOnFeed(page: Int) = Action.async { implicit request =>
+    val formData = PostArticleForm.postArticleForm.bindFromRequest.data
+    articleService.postArticle(formData("userId").toInt, formData("body"))
+
+    this.serveFeed(page, pageSize)
+  }
 
 
   def articleDetailIndex(articleId: Int) = TODO
 
   def postCommentOnArticle(articleId: Int) = TODO
-  
+
   def userDetailIndex(userId: Int) = TODO
 
 }

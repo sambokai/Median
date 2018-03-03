@@ -2,6 +2,7 @@ package services
 
 import javax.inject.{Inject, Singleton}
 
+import com.github.nscala_time.time.Imports._
 import com.github.tototoshi.slick.MySQLJodaSupport._
 import database.tables.generated
 import database.tables.generated.Tables._
@@ -17,12 +18,16 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
 
+  import ArticleService._
+
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
 
-  def postArticle(userId: Int, body: String): Future[Int] = ???
-
+  def postArticle(userId: Int, body: String): Future[Int] = {
+    val query = (Articles returning Articles.map(_.articleId)) += ArticlesRow(autoIncrement, userId, body, DateTime.now)
+    db.run(query)
+  }
 
   def getLatestArticles(limit: Int, offset: Int): Future[ArticlesSection] = {
 
@@ -77,4 +82,8 @@ class ArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
 
   def getArticle(articleId: Int): Future[Article] = ???
 
+}
+
+object ArticleService {
+  val autoIncrement: Int = 0
 }
