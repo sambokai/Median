@@ -5,7 +5,7 @@ GET         /feed/:page                controllers.BlogController.articleFeedInd
 POST        /feed                      controllers.BlogController.postArticleOnFeed(page:Int)
 POST        /feed/:page                controllers.BlogController.postArticleOnFeed(page:Int)
 
-
+GET         /user/:userId              controllers.BlogController.userDetailIndex(userId: Int)
 
 GET         /article/:articleId        controllers.BlogController.articleDetailIndex(articleId: Int)
 POST        /article/:articleId        controllers.BlogController.postCommentOnArticle(articleId: Int)

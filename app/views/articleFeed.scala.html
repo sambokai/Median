@@ -32,7 +32,7 @@
     articlesSection.articles.map { article =>
         <div class="card mt-2">
           <div class="card-header">
-            <a href="#">{article.user.username} </a> on {article.created.toString("dd. MMM yyyy ' at ' k:m:ss", Locale.ENGLISH)}
+            <a href={s"/user/${article.user.id}"}>{article.user.username} </a> on {article.created.toString("dd. MMM yyyy ' at ' k:m:ss", Locale.ENGLISH)}
           </div>
           <div class="card-body">
             <p class="card-text">{article.body}</p>

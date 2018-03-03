@@ -35,5 +35,7 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
   def articleDetailIndex(articleId: Int) = TODO
 
   def postCommentOnArticle(articleId: Int) = TODO
+  
+  def userDetailIndex(userId: Int) = TODO
 
 }
