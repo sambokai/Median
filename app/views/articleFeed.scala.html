@@ -19,10 +19,11 @@
 @main("Article Feed") {
 
 @* Post Article *@
-<div class="card">
+@if(articlesSection.currentPage == 1){
+<div class="card mb-3">
   <div class="card-body">
     <h5 class="card-title">New Article</h5>
-    @helper.form(postUrl, 'class -> "mb-3") {
+    @helper.form(postUrl) {
       @helper.CSRF.formField
       @helper.textarea(form("body"), 'class -> "form-control", 'required -> true,  '_label -> "What's on your mind?")
       @helper.select(form("userId"), userOptions, 'class -> "form-control", '_label -> "Who are you?")
@@ -31,7 +32,7 @@
   }
   </div>
 </div>
-
+}
   @* Article Feed *@
 
   @{
