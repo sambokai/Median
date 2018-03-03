@@ -5,7 +5,7 @@ import javax.inject.{Inject, Singleton}
 import domain.User
 import dto.ArticlesSection
 import play.api.i18n.I18nSupport
-import play.api.mvc.{AbstractController, Call, ControllerComponents, MessagesActionBuilder}
+import play.api.mvc.{AbstractController, ControllerComponents, MessagesActionBuilder}
 import services.{ArticleService, CommentService, UserService}
 import views.form.PostArticleForm
 
@@ -20,20 +20,13 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
     val articlePostUrl = routes.BlogController.postArticleOnFeed(page)
 
     val allUsers: Future[Seq[User]] = userService.getAllUsers
+    val eventualArticlesSection: Future[ArticlesSection] = articleService.getLatestArticles(pageSize, (page - 1) * pageSize)
 
+    for {
+      users <- allUsers
+      articleSection <- eventualArticlesSection
+    } yield Ok(views.html.articleFeed(articleSection, PostArticleForm.postArticleForm, users, articlePostUrl))
 
-    val eventualArticlesSection: Future[ArticlesSection] = { //TODO: Use articleService.getLatestArticles() instead of mocking an ArticleSection
-      import com.github.nscala_time.time.Imports._
-
-      val exampleUser = domain.User(1, "Sam", Some(22))
-      val exampleArticle = domain.Article(1, exampleUser, "This is an example Article for development purposes.", DateTime.now, Seq.empty[domain.Comment])
-
-      Future.successful(ArticlesSection(Seq(exampleArticle), 1, 10))
-    }
-
-    allUsers.flatMap{users =>
-      eventualArticlesSection.map(section => Ok(views.html.articleFeed(section, PostArticleForm.postArticleForm, users, articlePostUrl)))
-    }
   }
 
   def postArticleOnFeed(page: Int) = TODO

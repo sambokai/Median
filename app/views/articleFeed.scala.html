@@ -32,13 +32,13 @@
     articlesSection.articles.map { article =>
         <div class="card mt-2">
           <div class="card-header">
-            <a href="#">{article.user.username}</a> on {article.created.toString("dd. MMM yyyy ' at ' k:m:ss", Locale.ENGLISH)}
+            <a href="#">{article.user.username} </a> on {article.created.toString("dd. MMM yyyy ' at ' k:m:ss", Locale.ENGLISH)}
           </div>
           <div class="card-body">
             <p class="card-text">{article.body}</p>
           </div>
           <div class="card-footer text-muted">
-            <a href={s"/article/${article.id}"} class="badge badge-light">Comments</a>
+            <a href={s"/article/${article.id}"} class="badge badge-light">{article.comments.size} Comments</a>
           </div>
         </div>
 
@@ -51,14 +51,14 @@
       <li class="page-item @if(articlesSection.currentPage == 1){disabled} ">
         <a class="page-link" href="@{articlesSection.currentPage - 1}">Previous</a>
       </li>
-      @for(i <- 1 to articlesSection.totalPages) {
+      @for(i <- 1 to articlesSection.totalPages + 1) {
         <li class="page-item @if(i == articlesSection.currentPage){active} ">
           <a class="page-link" href="@{i}">
             @{i}
           </a>
         </li>
       }
-      <li class="page-item @if(articlesSection.currentPage == articlesSection.totalPages){disabled}">
+      <li class="page-item @if(articlesSection.currentPage == articlesSection.totalPages + 1){disabled}">
         <a class="page-link" href="@{articlesSection.currentPage + 1}">Next</a>
       </li>
     </ul>

@@ -3,7 +3,6 @@ package database.tables.generated
 import com.github.nscala_time.time.Imports._
 import com.github.tototoshi.slick.MySQLJodaSupport._
 
-
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
 object Tables extends {
@@ -24,16 +23,16 @@ trait Tables {
   def ddl = schema
 
   /** Entity class storing rows of table ArticleComments
-   *  @param articleCommentId Database column article_comment_id SqlType(INT), AutoInc, PrimaryKey
-   *  @param userId Database column user_id SqlType(INT)
-   *  @param articleId Database column article_id SqlType(INT)
-   *  @param createdOn Database column created_on SqlType(DATETIME)
-   *  @param body Database column body SqlType(TEXT) */
+    *  @param articleCommentId Database column article_comment_id SqlType(INT), AutoInc, PrimaryKey
+    *  @param userId Database column user_id SqlType(INT)
+    *  @param articleId Database column article_id SqlType(INT)
+    *  @param createdOn Database column created_on SqlType(DATETIME)
+    *  @param body Database column body SqlType(TEXT) */
   case class ArticleCommentsRow(articleCommentId: Int, userId: Int, articleId: Int, createdOn: DateTime, body: String)
   /** GetResult implicit for fetching ArticleCommentsRow objects using plain SQL queries */
   implicit def GetResultArticleCommentsRow(implicit e0: GR[Int], e1: GR[DateTime], e2: GR[String]): GR[ArticleCommentsRow] = GR{
     prs => import prs._
-    ArticleCommentsRow.tupled((<<[Int], <<[Int], <<[Int], <<[DateTime], <<[String]))
+      ArticleCommentsRow.tupled((<<[Int], <<[Int], <<[Int], <<[DateTime], <<[String]))
   }
   /** Table description of table ARTICLE_COMMENTS. Objects of this class serve as prototypes for rows in queries. */
   class ArticleComments(_tableTag: Tag) extends profile.api.Table[ArticleCommentsRow](_tableTag, Some("BLOGGING"), "ARTICLE_COMMENTS") {
@@ -61,47 +60,47 @@ trait Tables {
   lazy val ArticleComments = new TableQuery(tag => new ArticleComments(tag))
 
   /** Entity class storing rows of table Articles
-   *  @param articleId Database column article_id SqlType(INT), AutoInc, PrimaryKey
-   *  @param userId Database column user_id SqlType(INT), Default(None)
-   *  @param body Database column body SqlType(VARCHAR), Length(500,true), Default(None)
-   *  @param createdOn Database column created_on SqlType(DATETIME), Default(None) */
-  case class ArticlesRow(articleId: Int, userId: Option[Int] = None, body: Option[String] = None, createdOn: Option[DateTime] = None)
+    *  @param articleId Database column article_id SqlType(INT), AutoInc, PrimaryKey
+    *  @param userId Database column user_id SqlType(INT)
+    *  @param body Database column body SqlType(VARCHAR), Length(500,true)
+    *  @param createdOn Database column created_on SqlType(DATETIME) */
+  case class ArticlesRow(articleId: Int, userId: Int, body: String, createdOn: DateTime)
   /** GetResult implicit for fetching ArticlesRow objects using plain SQL queries */
-  implicit def GetResultArticlesRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[Option[String]], e3: GR[Option[DateTime]]): GR[ArticlesRow] = GR{
+  implicit def GetResultArticlesRow(implicit e0: GR[Int], e1: GR[String], e2: GR[DateTime]): GR[ArticlesRow] = GR{
     prs => import prs._
-    ArticlesRow.tupled((<<[Int], <<?[Int], <<?[String], <<?[DateTime]))
+      ArticlesRow.tupled((<<[Int], <<[Int], <<[String], <<[DateTime]))
   }
   /** Table description of table ARTICLES. Objects of this class serve as prototypes for rows in queries. */
   class Articles(_tableTag: Tag) extends profile.api.Table[ArticlesRow](_tableTag, Some("BLOGGING"), "ARTICLES") {
     def * = (articleId, userId, body, createdOn) <> (ArticlesRow.tupled, ArticlesRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(articleId), userId, body, createdOn).shaped.<>({r=>import r._; _1.map(_=> ArticlesRow.tupled((_1.get, _2, _3, _4)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(articleId), Rep.Some(userId), Rep.Some(body), Rep.Some(createdOn)).shaped.<>({r=>import r._; _1.map(_=> ArticlesRow.tupled((_1.get, _2.get, _3.get, _4.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column article_id SqlType(INT), AutoInc, PrimaryKey */
     val articleId: Rep[Int] = column[Int]("article_id", O.AutoInc, O.PrimaryKey)
-    /** Database column user_id SqlType(INT), Default(None) */
-    val userId: Rep[Option[Int]] = column[Option[Int]]("user_id", O.Default(None))
-    /** Database column body SqlType(VARCHAR), Length(500,true), Default(None) */
-    val body: Rep[Option[String]] = column[Option[String]]("body", O.Length(500,varying=true), O.Default(None))
-    /** Database column created_on SqlType(DATETIME), Default(None) */
-    val createdOn: Rep[Option[DateTime]] = column[Option[DateTime]]("created_on", O.Default(None))
+    /** Database column user_id SqlType(INT) */
+    val userId: Rep[Int] = column[Int]("user_id")
+    /** Database column body SqlType(VARCHAR), Length(500,true) */
+    val body: Rep[String] = column[String]("body", O.Length(500,varying=true))
+    /** Database column created_on SqlType(DATETIME) */
+    val createdOn: Rep[DateTime] = column[DateTime]("created_on")
 
     /** Foreign key referencing Users (database name ARTICLES_USERS_user_id_fk) */
-    lazy val usersFk = foreignKey("ARTICLES_USERS_user_id_fk", userId, Users)(r => Rep.Some(r.userId), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    lazy val usersFk = foreignKey("ARTICLES_USERS_user_id_fk", userId, Users)(r => r.userId, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table Articles */
   lazy val Articles = new TableQuery(tag => new Articles(tag))
 
   /** Entity class storing rows of table Users
-   *  @param userId Database column user_id SqlType(INT), AutoInc, PrimaryKey
-   *  @param username Database column username SqlType(TEXT)
-   *  @param emailAdress Database column email_adress SqlType(TEXT)
-   *  @param birthday Database column birthday SqlType(DATE), Default(None) */
+    *  @param userId Database column user_id SqlType(INT), AutoInc, PrimaryKey
+    *  @param username Database column username SqlType(TEXT)
+    *  @param emailAdress Database column email_adress SqlType(TEXT)
+    *  @param birthday Database column birthday SqlType(DATE), Default(None) */
   case class UsersRow(userId: Int, username: String, emailAdress: String, birthday: Option[LocalDate] = None)
   /** GetResult implicit for fetching UsersRow objects using plain SQL queries */
   implicit def GetResultUsersRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[LocalDate]]): GR[UsersRow] = GR{
     prs => import prs._
-    UsersRow.tupled((<<[Int], <<[String], <<[String], <<?[LocalDate]))
+      UsersRow.tupled((<<[Int], <<[String], <<[String], <<?[LocalDate]))
   }
   /** Table description of table USERS. Objects of this class serve as prototypes for rows in queries. */
   class Users(_tableTag: Tag) extends profile.api.Table[UsersRow](_tableTag, Some("BLOGGING"), "USERS") {
