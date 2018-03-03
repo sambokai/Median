@@ -1,0 +1,25 @@
+@import java.util.Locale
+
+@import domain.User
+
+@(user: User)
+@main(s"${user.username}'s Profile") {
+
+  @{
+      <div class="card mt-2 mb-4">
+        <div class="card-body">
+          <h5 class="card-title">
+            {user.username}
+          </h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            Age: {user.age.getOrElse("Unknown")} ({user.birthday.get.toString("dd. MMM yyyy", Locale.ENGLISH)})
+          </h6>
+        </div>
+      </div>
+  }
+
+
+
+
+}
+

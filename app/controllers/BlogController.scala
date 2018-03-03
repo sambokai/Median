@@ -45,6 +45,8 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
 
   def postCommentOnArticle(articleId: Int) = TODO
 
-  def userDetailIndex(userId: Int) = TODO
+  def userDetailIndex(userId: Int) = Action.async { implicit request =>
+    userService.getUser(userId).map(user => Ok(views.html.userDetail(user)))
+  }
 
 }
