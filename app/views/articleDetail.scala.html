@@ -1,28 +1,51 @@
+@import java.util.Locale
+
 @import domain.Article
+
 @(article: Article)
 @main(s"Article #${article.id}") {
 
   @{
-      <h3>
-      User #
-      {article.user.id}
-      wrote article:
-      </h3>
-      <p>
-      {article.body}
-      </p>
+      <div class="card mt-2 mb-4">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href={s"/user/${article.user.id}"}>{article.user.username}</a>
+          </h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            {article.created.toString("dd. MMM yyyy ' at ' k:mm:ss", Locale.ENGLISH)}
+          </h6>
+        <p class="card-text">{article.body}</p>
+        </div>
+      </div>
   }
 
-  <h4>Comments:</h4>
 
-  @{
-    article.comments.map { comment =>
-      <h5>
-      {comment.user.username}
-      wrote:
-      {comment.body}
-      </h5>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"> @{article.comments.size} Comments</h5>
+
+    <div class="list-group">
+
+    @{
+      article.comments.map {comment =>
+      <div class="list-group-item   flex-column align-items-start">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">
+          <a href={s"/user/${comment.user.id}"}>
+            {comment.user.username}
+          </a>
+        </h5>
+        <small>{comment.created.toString("dd. MMM yyyy ' at ' k:mm:ss")}</small>
+      </div>
+      <p class="mb-1">{comment.body}</p>
+      </div>
+      }
     }
-  }
+    </div>
+
+    </div>
+  </div>
+
+
 }
 
