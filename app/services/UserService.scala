@@ -29,4 +29,18 @@ class UserService @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit e
       )
     })
   }
+
+  def getUser(userId: Int): Future[User] = {
+    val query = Users.filter(_.userId === userId)
+
+    val usersRow = db.run(query.result).map(_.head)
+
+    usersRow.map{ usersRow =>
+      User(
+        usersRow.userId,
+        usersRow.username,
+        usersRow.birthday
+      )
+    }
+  }
 }
