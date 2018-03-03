@@ -24,7 +24,7 @@
     <h5 class="card-title">New Article</h5>
     @helper.form(postUrl, 'class -> "mb-3") {
       @helper.CSRF.formField
-      @helper.textarea(form("body"), 'class -> "form-control", 'required -> true,  '_label -> "Article Text")
+      @helper.textarea(form("body"), 'class -> "form-control", 'required -> true,  '_label -> "What's on your mind?")
       @helper.select(form("userId"), userOptions, 'class -> "form-control", '_label -> "Who are you?")
 
     <button type="submit" class="btn btn-primary">Submit</button>
