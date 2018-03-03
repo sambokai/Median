@@ -3,6 +3,7 @@
 @import views.form.PostArticleForm
 @import domain.User
 @import dto.ArticlesSection
+@import views.html.form.PostArticleFormConstructorTemplate
 @(articlesSection: ArticlesSection, form: Form[PostArticleForm], users: Seq[User], postUrl: Call)(implicit request: RequestHeader, messages: Messages)
 
 @userOptions = @{
@@ -11,20 +12,25 @@
   }
 }
 
+@implicitField = @{
+  helper.FieldConstructor(PostArticleFormConstructorTemplate.f)
+}
 
 @main("Article Feed") {
 
-  @* Post Article *@
-  @helper.form(postUrl) {
+@* Post Article *@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">New Article</h5>
+    @helper.form(postUrl, 'class -> "mb-3") {
+      @helper.CSRF.formField
+      @helper.textarea(form("body"), 'class -> "form-control", 'required -> true,  '_label -> "Article Text")
+      @helper.select(form("userId"), userOptions, 'class -> "form-control", '_label -> "Who are you?")
 
-    @helper.CSRF.formField
-    @helper.textarea(form("body"), 'required -> true, 'title -> "Article Text")
-    @helper.select(form("userId"), userOptions)
-
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Post Article</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
   }
-
-
+  </div>
+</div>
 
   @* Article Feed *@
 

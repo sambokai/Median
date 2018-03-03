@@ -1,0 +1,6 @@
+@(elements: helper.FieldElements)
+
+<div class="@if(elements.hasErrors) {error} form-group">
+  <label for="@elements.id">@elements.label</label>
+  @elements.input
+</div>

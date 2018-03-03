@@ -67,8 +67,6 @@ class ArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
       .sortBy(-_.created.getMillis)
     )
 
-    y.map(_.foreach(i => println(i.body)))
-
     val totalPageCount: Future[Int] = db.run(Articles.size.result).map(_ / limit)
     val currentPage: Int = offset / limit + 1
 
