@@ -38,10 +38,13 @@
   @{
     articlesSection.articles.map { article =>
         <div class="card mt-2">
-          <div class="card-header">
-            <a href={s"/user/${article.user.id}"}>{article.user.username} </a> on {article.created.toString("dd. MMM yyyy ' at ' k:m:ss", Locale.ENGLISH)}
-          </div>
           <div class="card-body">
+            <h5 class="card-title">
+              <a href={s"/user/${article.user.id}"}>{article.user.username}</a>
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+              {article.created.toString("dd. MMM yyyy ' at ' k:mm:ss", Locale.ENGLISH)}
+            </h6>
             <p class="card-text">{article.body}</p>
           </div>
           <div class="card-footer text-muted">
