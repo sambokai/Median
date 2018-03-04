@@ -1,7 +1,8 @@
 @import java.util.Locale
-@import views.html.form.FormConstructorTemplate
+
 @import domain.{Article, User}
 @import views.form.PostCommentForm
+@import views.html.form.FormConstructorTemplate
 
 @(article: Article, form: Form[PostCommentForm], users: Seq[User], postUrl: Call)(implicit request: RequestHeader, messages: Messages)
 
@@ -20,13 +21,17 @@
   @{
       <div class="card mt-2 mb-4">
         <div class="card-body">
-          <h5 class="card-title">
-            <a href={s"/user/${article.user.id}"}>{article.user.username}</a>
-          </h5>
-          <h6 class="card-subtitle mb-2 text-muted">
-            {article.created.toString("dd. MMM yyyy ' at ' k:mm:ss", Locale.ENGLISH)}
+          <div class="d-flex justify-content-start align-items-center mb-3">
+              <img class="img-fluid rounded-circle mr-2 articledetail-profile-picture"
+              src="https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png" alt="default_profile_picture"/>
+            <h5 class="text-center my-0">
+              <a href={s"/user/${article.user.id}"}>{article.user.username}</a>
+            </h5>
+          </div>
+          <h6 class="card-subtitle mb-4 text-muted">
+           {article.created.toString("dd. MMM yyyy ' at ' k:mm:ss", Locale.ENGLISH)}
           </h6>
-        <p class="card-text">{article.body}</p>
+          <p class="card-text">{article.body}</p>
         </div>
       </div>
   }
@@ -40,17 +45,19 @@
 
     @{
       article.comments.map {comment =>
-      <div class="list-group-item flex-column align-items-start">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">
-          <a href={s"/user/${comment.user.id}"}>
-            {comment.user.username}
-          </a>
-        </h5>
-        <small>{comment.created.toString("dd. MMM yyyy ' at ' k:mm:ss")}</small>
-      </div>
-      <p class="mb-1">{comment.body}</p>
-      </div>
+
+        <div class="list-group-item flex-column align-items-start">
+          <div class="d-flex w-100 justify-content-between mb-2 align-items-center">
+            <div class="d-flex justify-content-start align-items-center">
+              <img class="img-fluid rounded-circle mr-2 articlecomment-profile-picture" src="https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png" alt="default_profile_picture"/>
+              <h6 class="font-weight-normal text-center my-0">
+                <a href={s"/user/${comment.user.id}"}>{comment.user.username}</a>
+              </h6>
+            </div>
+            <small>{comment.created.toString("dd. MMM yyyy ' at ' k:mm:ss")}</small>
+          </div>
+          <p class="mb-1">{comment.body}</p>
+        </div>
       }
     }
 

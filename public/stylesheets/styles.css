@@ -2,6 +2,13 @@
   max-height: 40px;
 }
 
+.articledetail-profile-picture {
+  max-height: 55px;
+}
+
+.articlecomment-profile-picture {
+  max-height: 30px;
+}
 .card-subtitle.text-muted {
   color: rgba(108, 117, 125, 0.81) !important;
 }
