@@ -3,7 +3,7 @@
 @import views.form.PostArticleForm
 @import domain.User
 @import dto.ArticlesSection
-@import views.html.form.PostArticleFormConstructorTemplate
+@import views.html.form.FormConstructorTemplate
 @(articlesSection: ArticlesSection, form: Form[PostArticleForm], users: Seq[User], postUrl: Call)(implicit request: RequestHeader, messages: Messages)
 
 @userOptions = @{
@@ -13,7 +13,7 @@
 }
 
 @implicitField = @{
-  helper.FieldConstructor(PostArticleFormConstructorTemplate.f)
+  helper.FieldConstructor(FormConstructorTemplate.f)
 }
 
 @main("Article Feed") {

@@ -1,8 +1,20 @@
 @import java.util.Locale
+@import views.html.form.FormConstructorTemplate
+@import domain.{Article, User}
+@import views.form.PostCommentForm
 
-@import domain.Article
+@(article: Article, form: Form[PostCommentForm], users: Seq[User], postUrl: Call)(implicit request: RequestHeader, messages: Messages)
 
-@(article: Article)
+@userOptions = @{
+  users.map { user =>
+    (user.id.toString, user.username)
+  }
+}
+
+@implicitField = @{
+  helper.FieldConstructor(FormConstructorTemplate.f)
+}
+
 @main(s"Article #${article.id}") {
 
   @{
@@ -20,15 +32,15 @@
   }
 
 
-  <div class="card">
+  <div class="card mb-4">
     <div class="card-body">
       <h5 class="card-title"> @{article.comments.size} Comments</h5>
 
-    <div class="list-group">
+    <div class="list-group list-group-flush">
 
     @{
       article.comments.map {comment =>
-      <div class="list-group-item   flex-column align-items-start">
+      <div class="list-group-item flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">
           <a href={s"/user/${comment.user.id}"}>
@@ -41,9 +53,23 @@
       </div>
       }
     }
+
+    <div id="postArticleForm" class="card mb-3 list-group-item list-group-flush">
+      <div class="card-body">
+        <h5 class="card-title">New Comment</h5>
+        @helper.form(postUrl) {
+          @helper.CSRF.formField
+          @helper.textarea(form("body"), 'class -> "form-control", 'required -> true,  '_label -> "What do you think?")
+          @helper.select(form("userId"), userOptions, 'class -> "form-control", '_label -> "Who are you?")
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        }
+      </div>
     </div>
 
     </div>
+    </div>
+
   </div>
 
 

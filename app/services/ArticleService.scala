@@ -19,8 +19,6 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
 
-  import ArticleService._
-
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
@@ -94,8 +92,4 @@ class ArticleService @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
       .toSeq
     )
   }
-}
-
-object ArticleService {
-  val autoIncrement: Int = 0
 }

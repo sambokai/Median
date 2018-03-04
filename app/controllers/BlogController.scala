@@ -7,7 +7,7 @@ import dto.ArticlesSection
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.{ArticleService, CommentService, UserService}
-import views.form.PostArticleForm
+import views.form.{PostArticleForm, PostCommentForm}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -16,8 +16,8 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
 
   private val pageSize: Int = 5
 
-  def articlePostUrl(page: Int) = routes.BlogController.postArticleOnFeed(page)
 
+  def articlePostUrl(page: Int) = routes.BlogController.postArticleOnFeed(page)
 
   def serveFeed(page: Int, pageSize: Int)(implicit request: Request[AnyContent]) = {
     val allUsers: Future[Seq[User]] = userService.getAllUsers
@@ -38,12 +38,29 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
     this.serveFeed(page, pageSize)
   }
 
+  def commentPostUrl(articleId: Int) = routes.BlogController.postCommentOnArticle(articleId)
 
-  def articleDetailIndex(articleId: Int) = Action.async { implicit request =>
-    articleService.getArticle(articleId).map(article => Ok(views.html.articleDetail(article)))
+  def serveArticleDetail(articleId: Int)(implicit request: Request[AnyContent]) = {
+    val allUsers: Future[Seq[User]] = userService.getAllUsers
+    val eventualArticle = articleService.getArticle(articleId)
+
+    for {
+      users <- allUsers
+      article <- eventualArticle
+    } yield Ok(views.html.articleDetail(article, PostCommentForm.postCommentForm, users, commentPostUrl(articleId)))
   }
 
-  def postCommentOnArticle(articleId: Int) = TODO
+  def articleDetailIndex(articleId: Int) = Action.async { implicit request =>
+    serveArticleDetail(articleId)
+  }
+
+  def postCommentOnArticle(articleId: Int) = Action.async { implicit request =>
+    val formData = PostCommentForm.postCommentForm.bindFromRequest.data
+    commentService.postCommentFor(formData("userId").toInt, articleId, formData("body"))
+
+    serveArticleDetail(articleId)
+  }
+
 
   def userDetailIndex(userId: Int) = Action.async { implicit request =>
     userService.getUser(userId).map(user => Ok(views.html.userDetail(user)))
