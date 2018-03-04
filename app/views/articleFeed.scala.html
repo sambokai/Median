@@ -39,10 +39,14 @@
     articlesSection.articles.map { article =>
         <div class="card mt-2">
           <div class="card-body">
-            <h5 class="card-title">
-              <a href={s"/user/${article.user.id}"}>{article.user.username}</a>
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted">
+            <div class="d-flex justify-content-start align-items-end mb-3">
+              <img class="img-fluid rounded-circle mr-2 articlefeed-profile-picture"
+              src="https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png" alt="default_profile_picture"/>
+              <h5>
+                <a href={s"/user/${article.user.id}"}>{article.user.username}</a>
+              </h5>
+            </div>
+            <h6 class="card-subtitle mb-4 text-muted">
               {article.created.toString("dd. MMM yyyy ' at ' k:mm:ss", Locale.ENGLISH)}
             </h6>
             <p class="card-text">{article.body}</p>
