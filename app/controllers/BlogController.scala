@@ -17,9 +17,9 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
   private val pageSize: Int = 5
 
 
-  def articlePostUrl(page: Int) = routes.BlogController.postArticleOnFeed(page)
+  private def articlePostUrl(page: Int) = routes.BlogController.postArticleOnFeed(page)
 
-  def serveFeed(page: Int, pageSize: Int)(implicit request: Request[AnyContent]) = {
+  private def serveFeed(page: Int, pageSize: Int)(implicit request: Request[AnyContent]) = {
     val allUsers: Future[Seq[User]] = userService.getAllUsers
     val eventualArticlesSection: Future[ArticlesSection] = articleService.getLatestArticles(pageSize, (page - 1) * pageSize)
 
@@ -38,9 +38,9 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
     this.serveFeed(page, pageSize)
   }
 
-  def commentPostUrl(articleId: Int) = routes.BlogController.postCommentOnArticle(articleId)
+  private def commentPostUrl(articleId: Int) = routes.BlogController.postCommentOnArticle(articleId)
 
-  def serveArticleDetail(articleId: Int)(implicit request: Request[AnyContent]) = {
+  private def serveArticleDetail(articleId: Int)(implicit request: Request[AnyContent]) = {
     val allUsers: Future[Seq[User]] = userService.getAllUsers
     val eventualArticle = articleService.getArticle(articleId)
 
