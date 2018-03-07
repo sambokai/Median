@@ -41,7 +41,7 @@
           <div class="card-body">
             <div class="d-flex justify-content-start align-items-center mb-3">
               <img class="img-fluid rounded-circle mr-2 articlefeed-profile-picture"
-              src="https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png" alt="default_profile_picture"/>
+              src={article.user.pictureSource.getOrElse("https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png")} alt="default_profile_picture"/>
               <h5 class="text-center my-0">
                 <a href={s"/user/${article.user.id}"}>{article.user.username}</a>
               </h5>
@@ -52,7 +52,7 @@
             <p class="card-text">{article.body}</p>
           </div>
           <div class="card-footer text-muted">
-            <a href={s"/article/${article.id}"} class="badge badge-light">{article.comments.size} Comments</a>
+            <a href={s"/article/${article.id}"} class="badge badge-light">Comments</a>
           </div>
         </div>
 

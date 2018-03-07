@@ -4,7 +4,8 @@
 @import views.form.PostCommentForm
 @import views.html.form.FormConstructorTemplate
 
-@(article: Article, form: Form[PostCommentForm], users: Seq[User], postUrl: Call)(implicit request: RequestHeader, messages: Messages)
+@import domain.ArticleWithComments
+@(article: ArticleWithComments, form: Form[PostCommentForm], users: Seq[User], postUrl: Call)(implicit request: RequestHeader, messages: Messages)
 
 @userOptions = @{
   users.map { user =>
@@ -16,7 +17,7 @@
   helper.FieldConstructor(FormConstructorTemplate.f)
 }
 
-@main(s"Article #${article.id}") {
+@main(s"Article #${article.article.id}") {
 
   @{
       <div class="card mt-2 mb-4">
@@ -25,13 +26,13 @@
               <img class="img-fluid rounded-circle mr-2 articledetail-profile-picture"
               src="https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png" alt="default_profile_picture"/>
             <h5 class="text-center my-0">
-              <a href={s"/user/${article.user.id}"}>{article.user.username}</a>
+              <a href={s"/user/${article.article.user.id}"}>{article.article.user.username}</a>
             </h5>
           </div>
           <h6 class="card-subtitle mb-4 text-muted">
-           {article.created.toString("dd. MMM yyyy ' at ' k:mm:ss", Locale.ENGLISH)}
+           {article.article.created.toString("dd. MMM yyyy ' at ' k:mm:ss", Locale.ENGLISH)}
           </h6>
-          <p class="card-text">{article.body}</p>
+          <p class="card-text">{article.article.body}</p>
         </div>
       </div>
   }
@@ -44,7 +45,7 @@
     <div class="list-group list-group-flush">
 
     @{
-      article.comments.map {comment =>
+      article.comments.map(_.map {comment =>
 
         <div class="list-group-item flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between mb-2 align-items-center">
@@ -58,7 +59,7 @@
           </div>
           <p class="mb-1">{comment.body}</p>
         </div>
-      }
+      })
     }
 
     <div id="postArticleForm" class="card mb-3 list-group-item list-group-flush">
