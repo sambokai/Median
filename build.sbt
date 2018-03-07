@@ -14,6 +14,9 @@ libraryDependencies ++= Seq( ehcache , ws , specs2 % Test , guice )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
+libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % "test"
+
+
 // Slick
 libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % "3.2.1",
