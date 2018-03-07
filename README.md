@@ -1,4 +1,4 @@
-# Median  
+# Median [![Build Status](https://travis-ci.org/sambokai/Median.svg?branch=master)](https://travis-ci.org/sambokai/Median)
 ##### *Definitely not a [Medium](https://medium.com/) clone...*
 
 
