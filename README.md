@@ -9,6 +9,7 @@ Basic blogging web service built in order to learn and practice (enterprise) sof
 * AWS (Amazon Web Services)
     * [RDS (MySQL)](https://aws.amazon.com/rds/) - Managed relational database service
 * [Slick](http://slick.lightbend.com/) - Database access library for Scala 
+* [Travis CI](https://travis-ci.org) - Hosted continuous integration service
 * Tools like Balsamiq 3 for UI Mockups or Draw.io / Atlassian Confluence for (UML) diagrams.
 
 ### Notes
