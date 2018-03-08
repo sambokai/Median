@@ -1,8 +1,8 @@
-name := "play_slick_rest"
+name := "Median"
 
 version := "1.0"
 
-lazy val `play_slick_rest` = (project in file(".")).enablePlugins(PlayScala)
+lazy val `Median` = (project in file(".")).enablePlugins(PlayScala)
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
