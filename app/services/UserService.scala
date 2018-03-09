@@ -2,6 +2,7 @@ package services
 
 import javax.inject.{Inject, Singleton}
 
+import com.google.inject.ImplementedBy
 import database.tables.generated.Tables._
 import domain.User
 import play.api.db.slick.DatabaseConfigProvider
@@ -10,9 +11,15 @@ import slick.jdbc.MySQLProfile.api._
 
 import scala.concurrent.{ExecutionContext, Future}
 
+@ImplementedBy(classOf[UserServiceImpl])
+trait UserService {
+  def getAllUsers: Future[Seq[User]]
+
+  def getUser(userId: Int): Future[User]
+}
 
 @Singleton
-class UserService @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+class UserServiceImpl @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends UserService {
 
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
