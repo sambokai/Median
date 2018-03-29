@@ -53,7 +53,7 @@ class ArticleServiceImpl @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
     val articles: Future[Seq[Article]] = result.map(_.map {
       case ((article, author), authorPicture) => {
         val u = User(author.userId, author.username, author.birthday, authorPicture.map(_.src))
-        Article(article.userId, u, article.body, article.createdOn)
+        Article(article.articleId, u, article.body, article.createdOn)
       }
     })
 
