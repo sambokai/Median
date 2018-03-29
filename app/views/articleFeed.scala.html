@@ -65,7 +65,7 @@
       <li class="page-item @if(articlesSection.currentPage == 1){disabled} ">
         <a class="page-link" href="@{articlesSection.currentPage - 1}">Previous</a>
       </li>
-      @for(i <- 1 to articlesSection.totalPages + 1) {
+      @for(i <- 1 to articlesSection.totalPages) {
         <li class="page-item @if(i == articlesSection.currentPage){active} ">
           <a class="page-link" href="@{i}">
             @{i}
