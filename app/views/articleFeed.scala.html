@@ -16,6 +16,10 @@
   helper.FieldConstructor(FormConstructorTemplate.f)
 }
 
+@clamp(value: Int, min: Int, max: Int) = @{
+  math.min(math.max(value, min), max)
+}
+
 @main("Article Feed") {
 
 @* Post Article *@
@@ -65,7 +69,7 @@
       <li class="page-item @if(articlesSection.currentPage == 1){disabled} ">
         <a class="page-link" href="@{articlesSection.currentPage - 1}">Previous</a>
       </li>
-      @for(i <- 1 to articlesSection.totalPages) {
+      @for(i <- clamp(articlesSection.currentPage - 5, 1, articlesSection.totalPages - 10) to clamp(articlesSection.currentPage + 4, 10, articlesSection.totalPages)) {
         <li class="page-item @if(i == articlesSection.currentPage){active} ">
           <a class="page-link" href="@{i}">
             @{i}
