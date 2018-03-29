@@ -24,7 +24,7 @@
         <div class="card-body">
           <div class="d-flex justify-content-start align-items-center mb-3">
               <img class="img-fluid rounded-circle mr-2 articledetail-profile-picture"
-              src="https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png" alt="default_profile_picture"/>
+              src={article.article.user.pictureSource.getOrElse("https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png")} alt="default_profile_picture"/>
             <h5 class="text-center my-0">
               <a href={s"/user/${article.article.user.id}"}>{article.article.user.username}</a>
             </h5>
@@ -50,7 +50,7 @@
         <div class="list-group-item flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between mb-2 align-items-center">
             <div class="d-flex justify-content-start align-items-center">
-              <img class="img-fluid rounded-circle mr-2 articlecomment-profile-picture" src="https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png" alt="default_profile_picture"/>
+              <img class="img-fluid rounded-circle mr-2 articlecomment-profile-picture" src={comment.user.pictureSource.getOrElse("https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png")} alt="default_profile_picture"/>
               <h6 class="font-weight-normal text-center my-0">
                 <a href={s"/user/${comment.user.id}"}>{comment.user.username}</a>
               </h6>
