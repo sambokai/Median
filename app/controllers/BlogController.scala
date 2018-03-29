@@ -1,8 +1,7 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
-import domain.User
+import domain.{ArticleWithComments, User}
 import dto.ArticlesSection
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -42,7 +41,7 @@ class BlogController @Inject()(articleService: ArticleService, commentService: C
 
   private def serveArticleDetail(articleId: Int)(implicit request: Request[AnyContent]) = {
     val allUsers: Future[Seq[User]] = userService.getAllUsers
-    val eventualArticle = articleService.getArticle(articleId)
+    val eventualArticle: Future[ArticleWithComments] = articleService.getArticleWithComments(articleId)
 
     for {
       users <- allUsers

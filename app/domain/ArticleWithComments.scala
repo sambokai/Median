@@ -1,3 +1,3 @@
 package domain
 
-case class ArticleWithComments(article: Article, comments: Option[Seq[Comment]])
+case class ArticleWithComments(article: Article, comments: Seq[Comment])

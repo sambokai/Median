@@ -45,7 +45,7 @@
     <div class="list-group list-group-flush">
 
     @{
-      article.comments.map(_.map {comment =>
+      article.comments.map {comment =>
 
         <div class="list-group-item flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between mb-2 align-items-center">
@@ -59,7 +59,7 @@
           </div>
           <p class="mb-1">{comment.body}</p>
         </div>
-      })
+      }
     }
 
     <div id="postArticleForm" class="card mb-3 list-group-item list-group-flush">
