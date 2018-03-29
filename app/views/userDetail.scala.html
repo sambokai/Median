@@ -7,17 +7,20 @@
 
   @{
       <div class="card mt-2 mb-4">
-        <div class="card-body">
-          <h5 class="card-title">
-            {user.username}
-          </h5>
-          <h6 class="card-subtitle mb-2 text-muted">
-            Age: {user.age.getOrElse("Unknown")} ({user.birthday.get.toString("dd. MMM yyyy", Locale.ENGLISH)})
-          </h6>
-        </div>
+      <div class="card-body">
+      <div class="d-flex justify-content-start align-items-center mb-3">
+        <img class="img-fluid rounded-circle mr-2 articledetail-profile-picture"
+        src={user.pictureSource.getOrElse("https://s3.eu-central-1.amazonaws.com/median-static/images/profile_images/default/defaultpp_100x100.png")} alt="default_profile_picture"/>
+      <h5 class="text-center my-0">
+      <a href={s"/user/${user.id}"}>{user.username}</a>
+      </h5>
+      </div>
+      <h6 class="card-subtitle mb-4 text-muted">
+        {user.age.getOrElse("???")} years old ({user.birthday.get.toString("dd. MMM yyyy", Locale.ENGLISH)})
+      </h6>
+      </div>
       </div>
   }
-
 
 
 

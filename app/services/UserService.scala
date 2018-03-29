@@ -1,10 +1,9 @@
 package services
 
-import javax.inject.{Inject, Singleton}
-
 import com.google.inject.ImplementedBy
 import database.tables.generated.Tables._
 import domain.User
+import javax.inject.{Inject, Singleton}
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 import slick.jdbc.MySQLProfile.api._
@@ -41,5 +40,21 @@ class UserServiceImpl @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
     })
   }
 
-  def getUser(userId: Int): Future[User] = ???
+  def getUser(userId: Int): Future[User] = {
+    val query =
+      Users
+        .filter(_.userId === userId)
+        .joinLeft(UserProfilePicture).on(_.userId === _.userId)
+        .result
+
+    db.run(query).map(_.map {
+      case (user, pic) =>
+        User(
+          user.userId,
+          user.username,
+          user.birthday,
+          pic.map(_.src)
+        )
+    }.head)
+  }
 }
